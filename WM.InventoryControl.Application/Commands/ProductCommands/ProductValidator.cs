@@ -2,7 +2,7 @@
 
 namespace WM.InventoryControl.Application.Commands.ProductCommands
 {
-    public class ProductValidator
+    public static class ProductValidator
     {
         public static Product IsProductValid(Product product)
         {
@@ -15,6 +15,16 @@ namespace WM.InventoryControl.Application.Commands.ProductCommands
             if (string.IsNullOrEmpty(product.CategoryId.ToString())) throw new Exception("O CategoryId e obrigatório.");
 
             return product;
+        }
+
+        public static Product AddProduct(string name, int quantity, decimal price, Guid categoryId)
+        {
+            return IsProductValid(new Product(Guid.NewGuid(), name, quantity, price, categoryId, DateTime.Now, null));
+        }
+
+        public static Product UpdateProduct(this Product product, string name, int quantity, decimal price, Guid categoryId)
+        {
+            return IsProductValid(product.UpdateProduct(name, quantity, price, categoryId));
         }
     }
 }

@@ -7,15 +7,15 @@ using WM.InventoryControl.Infrastructure.Persistences.Services;
 
 namespace WM.InventoryControl.Infrastructure
 {
-    public static class InfrastructureConfiguration
+    public static class ConfigurationServices
     {
         public static void AddInfrastructure(this IServiceCollection services, string connectionString)
         {
             services.AddDbContext<ContextSqlServer>(options =>
             {
-                options.UseSqlServer(connectionString, a =>
+                options.UseSqlServer(connectionString, builder =>
                 {
-                    a.MigrationsAssembly("WM.InventoryControl.Api");
+                    builder.MigrationsAssembly(typeof(ContextSqlServer).Assembly.FullName);
                 });
             });
 

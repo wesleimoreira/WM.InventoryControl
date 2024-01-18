@@ -11,6 +11,7 @@ namespace WM.InventoryControl.Infrastructure.Persistences
             var result = await ContextSqlServer.Set<T>().AddAsync(entity);
             return result.Entity.Id;
         }
+
         public async Task AddRangeAsync<T>(IEnumerable<T> entities) where T : EntityBase
         {
             await ContextSqlServer.Set<T>().AddRangeAsync(entities);

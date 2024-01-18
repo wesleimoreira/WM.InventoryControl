@@ -2,5 +2,6 @@
 
 namespace WM.InventoryControl.Application.Commands.SaleCommands
 {
-    public record AddSaleCommand(int Quantity, decimal Price,IEnumerable<Guid> Products) : IRequest<Guid> { }
+    public record AddSaleProductViewModel(Guid ProductId, int Quantity, decimal Price);
+    public record AddSaleCommand(IEnumerable<AddSaleProductViewModel> Products) : IRequest<Guid> { }
 }

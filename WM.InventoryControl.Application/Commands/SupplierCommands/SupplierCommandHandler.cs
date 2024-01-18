@@ -10,9 +10,7 @@ namespace WM.InventoryControl.Application.Commands.SupplierCommands
 
         public async Task<Guid> Handle(AddSupplierCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var addressId = await _unitOfWork.AddAsync<Address>(new Address(
+            var addressId = await _unitOfWork.AddAsync<Address>(new Address(
                     Guid.NewGuid(),
                     request.Address.Country,
                     request.Address.State,
@@ -21,16 +19,11 @@ namespace WM.InventoryControl.Application.Commands.SupplierCommands
                     request.Address.Street,
                     request.Address.ZipCode));
 
-                var supplierId = await _unitOfWork.AddAsync<Supplier>(new Supplier(Guid.NewGuid(), request.Name, addressId));
+            var supplierId = await _unitOfWork.AddAsync<Supplier>(new Supplier(Guid.NewGuid(), request.Name, addressId));
 
-                await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
-                return supplierId;
-            }
-            catch
-            {
-                throw;
-            }
+            return supplierId;
         }
     }
 }

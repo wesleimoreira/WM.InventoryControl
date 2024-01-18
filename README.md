@@ -37,5 +37,6 @@
 </p>
 
  
-
-
+# Comandos para as migrations
+### dotnet ef migrations add addMigration --project WM.InventoryControl.Infrastructure --startup-project WM.InventoryControl.Api
+### dotnet ef database update --project WM.InventoryControl.Infrastructure --startup-project WM.InventoryControl.Api

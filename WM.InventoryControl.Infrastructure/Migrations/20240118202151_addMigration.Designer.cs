@@ -3,21 +3,24 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WM.InventoryControl.Infrastructure.Contexts;
 
 #nullable disable
 
-namespace WM.InventoryControl.Api.Migrations
+namespace WM.InventoryControl.Infrastructure.Migrations
 {
     [DbContext(typeof(ContextSqlServer))]
-    partial class ContextSqlServerModelSnapshot : ModelSnapshot
+    [Migration("20240118202151_addMigration")]
+    partial class addMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -128,6 +131,12 @@ namespace WM.InventoryControl.Api.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("DateAtualizacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateRegistration")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(150)");
@@ -137,9 +146,6 @@ namespace WM.InventoryControl.Api.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -217,6 +223,9 @@ namespace WM.InventoryControl.Api.Migrations
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("QuantityUnitProduct")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("SaleId")
                         .HasColumnType("uniqueidentifier");

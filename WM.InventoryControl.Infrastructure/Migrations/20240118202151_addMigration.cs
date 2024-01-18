@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace WM.InventoryControl.Api.Migrations
+namespace WM.InventoryControl.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class CriandoTabelas : Migration
+    public partial class addMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -114,7 +115,8 @@ namespace WM.InventoryControl.Api.Migrations
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DateAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateRegistration = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -184,7 +186,8 @@ namespace WM.InventoryControl.Api.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SaleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    QuantityUnitProduct = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

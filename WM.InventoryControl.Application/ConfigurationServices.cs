@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace WM.InventoryControl.Application
 {
-    public static class ApplicationConfiguration
+    public static class ConfigurationServices
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
