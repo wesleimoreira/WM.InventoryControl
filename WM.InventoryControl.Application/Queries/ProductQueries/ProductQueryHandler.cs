@@ -10,33 +10,19 @@ namespace WM.InventoryControl.Application.Queries.ProductQueries
 
         public async Task<IEnumerable<ProductDto>> Handle(GetAllProductQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                return (from product in await _productService.GetAllProductAsync()
-                        select new ProductDto(product.Id, product.Name, product.Quantity, product.Price,
-                               new CategoryDto(product.Category.Id, product.Category.Name))).ToList();
-            }
-            catch
-            {
-                throw;
-            }
+            return (from product in await _productService.GetAllProductAsync()
+                    select new ProductDto(product.Id, product.Name, product.Quantity, product.Price,
+                           new CategoryDto(product.Category.Id, product.Category.Name))).ToList();
         }
 
         public async Task<ProductDto> Handle(GetProductQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var product = await _productService.GetProductAsync(request.Id);
+            var product = await _productService.GetProductAsync(request.Id);
 
-                if (product is null) return default!;
+            if (product is null) return default!;
 
-                return new ProductDto(product.Id, product.Name, product.Quantity, product.Price,
-                               new CategoryDto(product.Category.Id, product.Category.Name));
-            }
-            catch
-            {
-                throw;
-            }
+            return new ProductDto(product.Id, product.Name, product.Quantity, product.Price,
+                           new CategoryDto(product.Category.Id, product.Category.Name));
         }
     }
 }

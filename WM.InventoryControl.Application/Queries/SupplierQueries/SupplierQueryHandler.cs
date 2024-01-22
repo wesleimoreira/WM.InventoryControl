@@ -10,47 +10,54 @@ namespace WM.InventoryControl.Application.Queries.SupplierQueries
 
         public async Task<SupplierDto> Handle(GetSupplierQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var supplier = await _supplierServic.GetSupplierAsync(request.Id);
+            var supplier = await _supplierServic.GetSupplierAsync(request.Id);
 
-                if (supplier is null) return default!;
+            if (supplier is null) return default!;
 
-                return new SupplierDto(supplier.Id, supplier.Name,
-                    new AddressDto(
-                        supplier.Address.Id,
-                        supplier.Address.Country,
-                        supplier.Address.State,
-                        supplier.Address.City,
-                        supplier.Address.District,
-                        supplier.Address.Street,
-                        supplier.Address.ZipCode));
-            }
-            catch
+            var ProductsList = new List<ProductDto>();
+
+            foreach (var product in supplier.SupplierProducts.Where(x => x.SupplierId == supplier.Id).Select(x => x.Product).ToList())
             {
-                throw;
+                ProductsList.Add(new ProductDto(product.Id, product.Name, product.Quantity, product.Price, null));
             }
+
+            return new SupplierDto(supplier.Id, supplier.Name,
+                new AddressDto(supplier.Address.Id,
+                supplier.Address.Country,
+                supplier.Address.State,
+                supplier.Address.City,
+                supplier.Address.District,
+                supplier.Address.Street,
+                supplier.Address.ZipCode),
+                ProductsList);
         }
 
         public async Task<IEnumerable<SupplierDto>> Handle(GetAllSupplierQuery request, CancellationToken cancellationToken)
         {
-            try
+            var suppliersList = new List<SupplierDto>();
+
+            foreach (var supplier in await _supplierServic.GetAllSuppliers())
             {
-                return (from supplier in await _supplierServic.GetAllSuppliers()
-                        select new SupplierDto(supplier.Id, supplier.Name,
-                               new AddressDto(
-                                    supplier.Address.Id,
-                                    supplier.Address.Country,
-                                    supplier.Address.State,
-                                    supplier.Address.City,
-                                    supplier.Address.District,
-                                    supplier.Address.Street,
-                                    supplier.Address.ZipCode))).ToList();
+                var ProductsList = new List<ProductDto>();
+
+                foreach (var product in supplier.SupplierProducts.Where(x => x.SupplierId == supplier.Id).Select(x => x.Product).ToList())
+                {
+                    ProductsList.Add(new ProductDto(product.Id, product.Name, product.Quantity, product.Price, null));
+                }
+
+                suppliersList.Add(new SupplierDto(supplier.Id, supplier.Name,
+                           new AddressDto(
+                               supplier.Address.Id,
+                               supplier.Address.Country,
+                               supplier.Address.State,
+                               supplier.Address.City,
+                               supplier.Address.District,
+                               supplier.Address.Street,
+                               supplier.Address.ZipCode),
+                               ProductsList));
             }
-            catch
-            {
-                throw;
-            }
+
+            return suppliersList;
         }
     }
 }

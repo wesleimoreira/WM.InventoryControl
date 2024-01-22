@@ -10,49 +10,33 @@ namespace WM.InventoryControl.Application.Queries.CompanyQueries
 
         public async Task<CompanyDto> Handle(GetCompanyQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var company = await _companyService.GetCompanyAsync(request.Id);
+            var company = await _companyService.GetCompanyAsync(request.Id);
 
-                if (company is null) return default!;
+            if (company is null) return default!;
 
-                var companyViewModel = new CompanyDto(company.Id, company.Name,
-                                       new AddressDto(
-                                            company.Address.Id,
-                                            company.Address.Country,
-                                            company.Address.State,
-                                            company.Address.City,
-                                            company.Address.District,
-                                            company.Address.Street,
-                                            company.Address.ZipCode));
-
-                return companyViewModel;
-            }
-            catch
-            {
-                throw;
-            }
+            return new CompanyDto(company.Id, company.Name,
+                                   new AddressDto(
+                                        company.Address.Id,
+                                        company.Address.Country,
+                                        company.Address.State,
+                                        company.Address.City,
+                                        company.Address.District,
+                                        company.Address.Street,
+                                        company.Address.ZipCode));
         }
 
         public async Task<IEnumerable<CompanyDto>> Handle(GetAllCompanyQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                return (from company in await _companyService.GetAllCompaniesAsync()
-                        select new CompanyDto(company.Id, company.Name,
-                                        new AddressDto(
-                                             company.Address.Id,
-                                             company.Address.Country,
-                                             company.Address.State,
-                                             company.Address.City,
-                                             company.Address.District,
-                                             company.Address.Street,
-                                             company.Address.ZipCode))).ToList();
-            }
-            catch
-            {
-                throw;
-            }
+            return (from company in await _companyService.GetAllCompaniesAsync()
+                    select new CompanyDto(company.Id, company.Name,
+                                    new AddressDto(
+                                         company.Address.Id,
+                                         company.Address.Country,
+                                         company.Address.State,
+                                         company.Address.City,
+                                         company.Address.District,
+                                         company.Address.Street,
+                                         company.Address.ZipCode))).ToList();
         }
     }
 }

@@ -9,12 +9,12 @@ namespace WM.InventoryControl.Infrastructure.Persistences.Services
     {
         public async Task<IEnumerable<Employee>> GetAllEmployeesAsync()
         {
-            return await ContextSqlServer.Employees.Include(x => x.Address).ToListAsync();
+            return await ContextSqlServer.Employees.Include(x => x.Address).Include(x => x.Company).ToListAsync();
         }
 
         public async Task<Employee> GetEmployeeAsync(Guid id)
         {
-            return await ContextSqlServer.Employees.Include(x => x.Address).SingleOrDefaultAsync(x => x.Id == id) ?? default!;
+            return await ContextSqlServer.Employees.Include(x => x.Address).Include(x => x.Company).SingleOrDefaultAsync(x => x.Id == id) ?? default!;
         }
     }
 }

@@ -10,31 +10,17 @@ namespace WM.InventoryControl.Application.Queries.CategoryQueries
 
         public async Task<IEnumerable<CategoryDto>> Handle(GetAllCategoryQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                return (from category in await _categoryService.GetAllCategoriesAsync()
-                        select new CategoryDto(category.Id, category.Name)).ToList();
-            }
-            catch
-            {
-                throw;
-            }
+            return (from category in await _categoryService.GetAllCategoriesAsync()
+                    select new CategoryDto(category.Id, category.Name)).ToList();
         }
 
         public async Task<CategoryDto> Handle(GetCategoryQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var category = await _categoryService.GetCategoryAsync(request.Id);
+            var category = await _categoryService.GetCategoryAsync(request.Id);
 
-                if (category is null) return default!;
+            if (category is null) return default!;
 
-                return new CategoryDto(category.Id, category.Name);
-            }
-            catch
-            {
-                throw;
-            }
+            return new CategoryDto(category.Id, category.Name);
         }
     }
 }

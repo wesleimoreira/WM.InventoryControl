@@ -10,12 +10,26 @@ namespace WM.InventoryControl.Application.Queries.PurchaseQueries
 
         public async Task<PurchaseDto> Handle(GetPurchaseQuery request, CancellationToken cancellationToken)
         {
-            try
+            var purchase = await _purchaseService.GetPurchaseAsync(request.Id);
+
+            if (purchase is null) return default!;
+
+            var products = new List<ProductDto>();
+
+            foreach (var product in purchase.PurchaseProducts.Where(x => x.PurchaseId.Equals(purchase.Id)).Select(x => x.Product).ToList())
             {
-                var purchase = await _purchaseService.GetPurchaseAsync(request.Id);
+                products.Add(new ProductDto(product.Id, product.Name, product.Quantity, product.Price, null));
+            }
 
-                if (purchase is null) return default!;
+            return new PurchaseDto(purchase.Id, purchase.Quantity, purchase.Price, purchase.DatePurchase, products);
+        }
 
+        public async Task<IEnumerable<PurchaseDto>> Handle(GetALlPurchaseQuery request, CancellationToken cancellationToken)
+        {
+            var purchases = new List<PurchaseDto>();
+
+            foreach (var purchase in await _purchaseService.GetAllPurchaseAsync())
+            {
                 var products = new List<ProductDto>();
 
                 foreach (var product in purchase.PurchaseProducts.Where(x => x.PurchaseId.Equals(purchase.Id)).Select(x => x.Product).ToList())
@@ -23,38 +37,10 @@ namespace WM.InventoryControl.Application.Queries.PurchaseQueries
                     products.Add(new ProductDto(product.Id, product.Name, product.Quantity, product.Price, null));
                 }
 
-                return new PurchaseDto(purchase.Id, purchase.Quantity, purchase.Price, purchase.DatePurchase, products);
+                purchases.Add(new PurchaseDto(purchase.Id, purchase.Quantity, purchase.Price, purchase.DatePurchase, products));
             }
-            catch
-            {
-                throw;
-            }
-        }
 
-        public async Task<IEnumerable<PurchaseDto>> Handle(GetALlPurchaseQuery request, CancellationToken cancellationToken)
-        {
-            try
-            {
-                var purchases = new List<PurchaseDto>();
-
-                foreach (var purchase in await _purchaseService.GetAllPurchaseAsync())
-                {
-                    var products = new List<ProductDto>();
-
-                    foreach (var product in purchase.PurchaseProducts.Where(x => x.PurchaseId.Equals(purchase.Id)).Select(x => x.Product).ToList())
-                    {
-                        products.Add(new ProductDto(product.Id, product.Name, product.Quantity, product.Price, null));
-                    }
-
-                    purchases.Add(new PurchaseDto(purchase.Id, purchase.Quantity, purchase.Price, purchase.DatePurchase, products));
-                }
-
-                return purchases;
-            }
-            catch
-            {
-                throw;
-            }
+            return purchases;
         }
     }
 }

@@ -16,6 +16,8 @@ namespace WM.InventoryControl.Application.Commands.ProductCommands
 
             var productId = await _unitOfWork.AddAsync<Product>(product);
 
+            await _unitOfWork.AddAsync<SupplierProduct>(new SupplierProduct(Guid.NewGuid(), productId, request.SupplierId));
+
             await _unitOfWork.SaveChangesAsync();
 
             return productId;
