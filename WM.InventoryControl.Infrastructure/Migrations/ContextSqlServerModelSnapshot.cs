@@ -183,6 +183,9 @@ namespace WM.InventoryControl.Infrastructure.Migrations
                     b.Property<Guid>("PurchaseId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("QuantityUnitProduct")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");

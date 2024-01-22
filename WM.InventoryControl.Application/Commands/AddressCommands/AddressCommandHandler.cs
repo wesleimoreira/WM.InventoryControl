@@ -9,18 +9,11 @@ namespace WM.InventoryControl.Application.Commands.AddressCommands
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         public async Task<Guid> Handle(AddressCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var address = new Address(Guid.NewGuid(), request.Country, request.State, request.City, request.District, request.Street, request.ZipCode);
+            var address = new Address(Guid.NewGuid(), request.Country, request.State, request.City, request.District, request.Street, request.ZipCode);
 
-                await _unitOfWork.AddAsync<Address>(address);
+            await _unitOfWork.AddAsync<Address>(address);
 
-                return address.Id;
-            }
-            catch
-            {
-                throw;
-            }
+            return address.Id;
         }
     }
 }

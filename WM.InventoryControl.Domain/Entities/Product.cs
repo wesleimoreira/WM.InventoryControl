@@ -27,9 +27,15 @@
             return this;
         }
 
-        public void UpdateQuantityProduct(int quantity)
+        public void UpdateQuantityProductSale(int quantity)
         {
             Quantity -= quantity;
+            DateAtualizacao = DateTime.Now;
+        }
+
+        public void UpdateQuantityProductPurchase(int quantity)
+        {
+            Quantity += quantity;
             DateAtualizacao = DateTime.Now;
         }
     }

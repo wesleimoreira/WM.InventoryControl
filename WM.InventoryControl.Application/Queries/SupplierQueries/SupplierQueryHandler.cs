@@ -1,14 +1,14 @@
 ﻿using MediatR;
-using WM.InventoryControl.Application.Queries.AddressQueries;
+using WM.InventoryControl.Application.Dtos;
 using WM.InventoryControl.Domain.Interfaces;
 
 namespace WM.InventoryControl.Application.Queries.SupplierQueries
 {
-    public class SupplierQueryHandler(ISupplierService supplierService) : IRequestHandler<GetSupplierQuery, SupplierViewModel>, IRequestHandler<GetAllSupplierQuery, IEnumerable<SupplierViewModel>>
+    public class SupplierQueryHandler(ISupplierService supplierService) : IRequestHandler<GetSupplierQuery, SupplierDto>, IRequestHandler<GetAllSupplierQuery, IEnumerable<SupplierDto>>
     {
         private readonly ISupplierService _supplierServic = supplierService;
 
-        public async Task<SupplierViewModel> Handle(GetSupplierQuery request, CancellationToken cancellationToken)
+        public async Task<SupplierDto> Handle(GetSupplierQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -16,8 +16,8 @@ namespace WM.InventoryControl.Application.Queries.SupplierQueries
 
                 if (supplier is null) return default!;
 
-                return new SupplierViewModel(supplier.Id, supplier.Name,
-                    new AddressViewModel(
+                return new SupplierDto(supplier.Id, supplier.Name,
+                    new AddressDto(
                         supplier.Address.Id,
                         supplier.Address.Country,
                         supplier.Address.State,
@@ -32,13 +32,13 @@ namespace WM.InventoryControl.Application.Queries.SupplierQueries
             }
         }
 
-        public async Task<IEnumerable<SupplierViewModel>> Handle(GetAllSupplierQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<SupplierDto>> Handle(GetAllSupplierQuery request, CancellationToken cancellationToken)
         {
             try
             {
                 return (from supplier in await _supplierServic.GetAllSuppliers()
-                        select new SupplierViewModel(supplier.Id, supplier.Name,
-                               new AddressViewModel(
+                        select new SupplierDto(supplier.Id, supplier.Name,
+                               new AddressDto(
                                     supplier.Address.Id,
                                     supplier.Address.Country,
                                     supplier.Address.State,

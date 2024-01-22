@@ -1,15 +1,14 @@
 ﻿using MediatR;
-using WM.InventoryControl.Application.Queries.AddressQueries;
-using WM.InventoryControl.Application.Queries.CompanyQueries;
+using WM.InventoryControl.Application.Dtos;
 using WM.InventoryControl.Domain.Interfaces;
 
 namespace WM.InventoryControl.Application.Queries.EmployeeQueries
 {
-    public class EmployeeQueryHandler(IEmployeeService employeeService) : IRequestHandler<GetEmployQuery, EmployeeViewModel>, IRequestHandler<GetAllEmployQuery, IEnumerable<EmployeeViewModel>>
+    public class EmployeeQueryHandler(IEmployeeService employeeService) : IRequestHandler<GetEmployQuery, EmployeeDto>, IRequestHandler<GetAllEmployQuery, IEnumerable<EmployeeDto>>
     {
         private readonly IEmployeeService _employeeService = employeeService;
 
-        public async Task<EmployeeViewModel> Handle(GetEmployQuery request, CancellationToken cancellationToken)
+        public async Task<EmployeeDto> Handle(GetEmployQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -17,9 +16,9 @@ namespace WM.InventoryControl.Application.Queries.EmployeeQueries
 
                 if (employee is null) return default!;
 
-                return new EmployeeViewModel(employee.Id, employee.Name,
-                    new CompanyViewModel(employee.Company.Id, employee.Company.Name, null),
-                    new AddressViewModel(
+                return new EmployeeDto(employee.Id, employee.Name,
+                    new CompanyDto(employee.Company.Id, employee.Company.Name, null),
+                    new AddressDto(
                         employee.Address.Id,
                         employee.Address.Country,
                         employee.Address.State,
@@ -34,14 +33,14 @@ namespace WM.InventoryControl.Application.Queries.EmployeeQueries
             }
         }
 
-        public async Task<IEnumerable<EmployeeViewModel>> Handle(GetAllEmployQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<EmployeeDto>> Handle(GetAllEmployQuery request, CancellationToken cancellationToken)
         {
             try
             {
                 return (from employee in await _employeeService.GetAllEmployeesAsync()
-                        select new EmployeeViewModel(employee.Id, employee.Name,
-                                new CompanyViewModel(employee.Company.Id, employee.Company.Name, null),
-                                new AddressViewModel(
+                        select new EmployeeDto(employee.Id, employee.Name,
+                                new CompanyDto(employee.Company.Id, employee.Company.Name, null),
+                                new AddressDto(
                                     employee.Address.Id,
                                     employee.Address.Country,
                                     employee.Address.State,

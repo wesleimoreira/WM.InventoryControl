@@ -1,7 +1,6 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using WM.InventoryControl.Domain.Entities;
+﻿using WM.InventoryControl.Domain.Entities;
 
-namespace WM.InventoryControl.Application.Commands.SaleCommands
+namespace WM.InventoryControl.Application.Validators
 {
     public static class SaleValidator
     {

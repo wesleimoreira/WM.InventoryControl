@@ -1,6 +1,6 @@
 ﻿using WM.InventoryControl.Domain.Entities;
 
-namespace WM.InventoryControl.Application.Commands.ProductCommands
+namespace WM.InventoryControl.Application.Validators
 {
     public static class ProductValidator
     {

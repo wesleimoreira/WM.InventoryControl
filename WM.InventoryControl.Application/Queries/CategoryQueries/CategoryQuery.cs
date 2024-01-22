@@ -1,7 +1,8 @@
 ﻿using MediatR;
+using WM.InventoryControl.Application.Dtos;
 
 namespace WM.InventoryControl.Application.Queries.CategoryQueries
 {
-    public record GetCategoryQuery(Guid Id) : IRequest<CategoryViewModel> { }
-    public record GetAllCategoryQuery : IRequest<IEnumerable<CategoryViewModel>> { }
+    public record GetCategoryQuery(Guid Id) : IRequest<CategoryDto> { }
+    public record GetAllCategoryQuery : IRequest<IEnumerable<CategoryDto>> { }
 }

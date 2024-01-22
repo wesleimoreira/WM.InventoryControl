@@ -1,14 +1,14 @@
 ﻿using MediatR;
-using WM.InventoryControl.Application.Queries.ProductQueries;
+using WM.InventoryControl.Application.Dtos;
 using WM.InventoryControl.Domain.Interfaces;
 
 namespace WM.InventoryControl.Application.Queries.PurchaseQueries
 {
-    public class PurchaseQueryHandler(IPurchaseService purchaseService) : IRequestHandler<GetPurchaseQuery, PurchaseViewModel>, IRequestHandler<GetALlPurchaseQuery, IEnumerable<PurchaseViewModel>>
+    public class PurchaseQueryHandler(IPurchaseService purchaseService) : IRequestHandler<GetPurchaseQuery, PurchaseDto>, IRequestHandler<GetALlPurchaseQuery, IEnumerable<PurchaseDto>>
     {
         private readonly IPurchaseService _purchaseService = purchaseService;
 
-        public async Task<PurchaseViewModel> Handle(GetPurchaseQuery request, CancellationToken cancellationToken)
+        public async Task<PurchaseDto> Handle(GetPurchaseQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -16,14 +16,14 @@ namespace WM.InventoryControl.Application.Queries.PurchaseQueries
 
                 if (purchase is null) return default!;
 
-                var products = new List<ProductViewModel>();
+                var products = new List<ProductDto>();
 
                 foreach (var product in purchase.PurchaseProducts.Where(x => x.PurchaseId.Equals(purchase.Id)).Select(x => x.Product).ToList())
                 {
-                    products.Add(new ProductViewModel(product.Id, product.Name, product.Quantity, product.Price, null));
+                    products.Add(new ProductDto(product.Id, product.Name, product.Quantity, product.Price, null));
                 }
 
-                return new PurchaseViewModel(purchase.Id, purchase.Quantity, purchase.Price, purchase.DatePurchase, products);
+                return new PurchaseDto(purchase.Id, purchase.Quantity, purchase.Price, purchase.DatePurchase, products);
             }
             catch
             {
@@ -31,22 +31,22 @@ namespace WM.InventoryControl.Application.Queries.PurchaseQueries
             }
         }
 
-        public async Task<IEnumerable<PurchaseViewModel>> Handle(GetALlPurchaseQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<PurchaseDto>> Handle(GetALlPurchaseQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var purchases = new List<PurchaseViewModel>();
+                var purchases = new List<PurchaseDto>();
 
                 foreach (var purchase in await _purchaseService.GetAllPurchaseAsync())
                 {
-                    var products = new List<ProductViewModel>();
+                    var products = new List<ProductDto>();
 
                     foreach (var product in purchase.PurchaseProducts.Where(x => x.PurchaseId.Equals(purchase.Id)).Select(x => x.Product).ToList())
                     {
-                        products.Add(new ProductViewModel(product.Id, product.Name, product.Quantity, product.Price, null));
+                        products.Add(new ProductDto(product.Id, product.Name, product.Quantity, product.Price, null));
                     }
 
-                    purchases.Add(new PurchaseViewModel(purchase.Id, purchase.Quantity, purchase.Price, purchase.DatePurchase, products));
+                    purchases.Add(new PurchaseDto(purchase.Id, purchase.Quantity, purchase.Price, purchase.DatePurchase, products));
                 }
 
                 return purchases;

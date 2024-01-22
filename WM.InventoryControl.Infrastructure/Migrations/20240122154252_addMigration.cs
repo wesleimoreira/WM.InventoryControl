@@ -45,8 +45,8 @@ namespace WM.InventoryControl.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
                     DatePurchase = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -161,7 +161,8 @@ namespace WM.InventoryControl.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PurchaseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PurchaseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    QuantityUnitProduct = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

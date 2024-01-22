@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using WM.InventoryControl.Application.Validators;
 using WM.InventoryControl.Domain.Entities;
 using WM.InventoryControl.Domain.Interfaces;
 

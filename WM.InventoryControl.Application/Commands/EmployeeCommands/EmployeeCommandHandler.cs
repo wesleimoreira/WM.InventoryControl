@@ -10,27 +10,20 @@ namespace WM.InventoryControl.Application.Commands.EmployeeCommands
 
         public async Task<Guid> Handle(AddEmployeeCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var addressId = await _unitOfWork.AddAsync<Address>(new Address(
-                    Guid.NewGuid(),
-                    request.Address.Country,
-                    request.Address.State,
-                    request.Address.City,
-                    request.Address.District,
-                    request.Address.Street,
-                    request.Address.ZipCode));
+            var addressId = await _unitOfWork.AddAsync<Address>(new Address(
+                   Guid.NewGuid(),
+                   request.Address.Country,
+                   request.Address.State,
+                   request.Address.City,
+                   request.Address.District,
+                   request.Address.Street,
+                   request.Address.ZipCode));
 
-                var employeeId = await _unitOfWork.AddAsync<Employee>(new Employee(Guid.NewGuid(), request.Name, request.CompanyId, addressId));
+            var employeeId = await _unitOfWork.AddAsync<Employee>(new Employee(Guid.NewGuid(), request.Name, request.CompanyId, addressId));
 
-                await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
-                return employeeId;
-            }
-            catch
-            {
-                throw;
-            }
+            return employeeId;
         }
     }
 }

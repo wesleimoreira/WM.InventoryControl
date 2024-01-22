@@ -1,18 +1,19 @@
 ﻿using MediatR;
+using WM.InventoryControl.Application.Dtos;
 using WM.InventoryControl.Domain.Interfaces;
 
 namespace WM.InventoryControl.Application.Queries.CategoryQueries
 {
-    public class CategoryQueryHandler(ICategoryService categoryService) : IRequestHandler<GetAllCategoryQuery, IEnumerable<CategoryViewModel>>, IRequestHandler<GetCategoryQuery, CategoryViewModel>
+    public class CategoryQueryHandler(ICategoryService categoryService) : IRequestHandler<GetAllCategoryQuery, IEnumerable<CategoryDto>>, IRequestHandler<GetCategoryQuery, CategoryDto>
     {
         private readonly ICategoryService _categoryService = categoryService;
 
-        public async Task<IEnumerable<CategoryViewModel>> Handle(GetAllCategoryQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CategoryDto>> Handle(GetAllCategoryQuery request, CancellationToken cancellationToken)
         {
             try
             {
                 return (from category in await _categoryService.GetAllCategoriesAsync()
-                        select new CategoryViewModel(category.Id, category.Name)).ToList();
+                        select new CategoryDto(category.Id, category.Name)).ToList();
             }
             catch
             {
@@ -20,7 +21,7 @@ namespace WM.InventoryControl.Application.Queries.CategoryQueries
             }
         }
 
-        public async Task<CategoryViewModel> Handle(GetCategoryQuery request, CancellationToken cancellationToken)
+        public async Task<CategoryDto> Handle(GetCategoryQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -28,7 +29,7 @@ namespace WM.InventoryControl.Application.Queries.CategoryQueries
 
                 if (category is null) return default!;
 
-                return new CategoryViewModel(category.Id, category.Name);
+                return new CategoryDto(category.Id, category.Name);
             }
             catch
             {

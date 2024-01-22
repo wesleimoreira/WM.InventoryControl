@@ -1,7 +1,7 @@
 ﻿using MediatR;
+using WM.InventoryControl.Application.Dtos;
 
 namespace WM.InventoryControl.Application.Commands.SaleCommands
 {
-    public record AddSaleProductViewModel(Guid ProductId, int Quantity, decimal Price);
-    public record AddSaleCommand(IEnumerable<AddSaleProductViewModel> Products) : IRequest<Guid> { }
+    public record AddSaleCommand(IEnumerable<ProductSalePurchaseDto> Products) : IRequest<Guid> { }
 }

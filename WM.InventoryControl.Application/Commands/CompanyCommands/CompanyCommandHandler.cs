@@ -9,9 +9,7 @@ namespace WM.InventoryControl.Application.Commands.CompanyCommands
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         public async Task<Guid> Handle(AddCompanyCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var addressId = await _unitOfWork.AddAsync<Address>(new Address(
+            var addressId = await _unitOfWork.AddAsync<Address>(new Address(
                     Guid.NewGuid(),
                     request.Address.Country,
                     request.Address.State,
@@ -20,16 +18,11 @@ namespace WM.InventoryControl.Application.Commands.CompanyCommands
                     request.Address.Street,
                     request.Address.ZipCode));
 
-                var companyId = await _unitOfWork.AddAsync<Company>(new Company(Guid.NewGuid(), request.Name, addressId));
+            var companyId = await _unitOfWork.AddAsync<Company>(new Company(Guid.NewGuid(), request.Name, addressId));
 
-                await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
-                return companyId;
-            }
-            catch
-            {
-                throw;
-            }
+            return companyId;
         }
     }
 }

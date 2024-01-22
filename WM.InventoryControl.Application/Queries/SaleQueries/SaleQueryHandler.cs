@@ -1,14 +1,14 @@
 ﻿using MediatR;
-using WM.InventoryControl.Application.Queries.ProductQueries;
+using WM.InventoryControl.Application.Dtos;
 using WM.InventoryControl.Domain.Interfaces;
 
 namespace WM.InventoryControl.Application.Queries.SaleQueries
 {
-    public class SaleQueryHandler(ISaleService saleService) : IRequestHandler<GetSaleQuery, SaleViewModel>, IRequestHandler<GetAllSaleQuery, IEnumerable<SaleViewModel>>
+    public class SaleQueryHandler(ISaleService saleService) : IRequestHandler<GetSaleQuery, SaleDto>, IRequestHandler<GetAllSaleQuery, IEnumerable<SaleDto>>
     {
         private readonly ISaleService _saleService = saleService;
 
-        public async Task<SaleViewModel> Handle(GetSaleQuery request, CancellationToken cancellationToken)
+        public async Task<SaleDto> Handle(GetSaleQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -16,14 +16,14 @@ namespace WM.InventoryControl.Application.Queries.SaleQueries
 
                 if (sale is null) return default!;
 
-                var products = new List<ProductViewModel>();
+                var products = new List<ProductDto>();
 
                 foreach (var product in sale.SaleProducts.Where(x => x.SaleId == sale.Id).Select(x => x.Product).ToList())
                 {
-                    products.Add(new ProductViewModel(product.Id, product.Name, product.Quantity, product.Price, null));
+                    products.Add(new ProductDto(product.Id, product.Name, product.Quantity, product.Price, null));
                 }
 
-                return new SaleViewModel(sale.Id, sale.Quantity, sale.Price, sale.DateSale, products);
+                return new SaleDto(sale.Id, sale.Quantity, sale.Price, sale.DateSale, products);
             }
             catch
             {
@@ -32,22 +32,22 @@ namespace WM.InventoryControl.Application.Queries.SaleQueries
             }
         }
 
-        public async Task<IEnumerable<SaleViewModel>> Handle(GetAllSaleQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<SaleDto>> Handle(GetAllSaleQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var sales = new List<SaleViewModel>();
+                var sales = new List<SaleDto>();
 
                 foreach (var sale in await _saleService.GetAllSalesAsync())
                 {
-                    var products = new List<ProductViewModel>();
+                    var products = new List<ProductDto>();
 
                     foreach (var product in sale.SaleProducts.Where(x => x.SaleId == sale.Id).Select(x => x.Product).ToList())
                     {
-                        products.Add(new ProductViewModel(product.Id, product.Name, product.Quantity, product.Price, null));
+                        products.Add(new ProductDto(product.Id, product.Name, product.Quantity, product.Price, null));
                     }
 
-                    sales.Add(new SaleViewModel(sale.Id, sale.Quantity, sale.Price, sale.DateSale, products));
+                    sales.Add(new SaleDto(sale.Id, sale.Quantity, sale.Price, sale.DateSale, products));
                 }
 
                 return sales;

@@ -12,7 +12,7 @@ using WM.InventoryControl.Infrastructure.Contexts;
 namespace WM.InventoryControl.Infrastructure.Migrations
 {
     [DbContext(typeof(ContextSqlServer))]
-    [Migration("20240118202151_addMigration")]
+    [Migration("20240122154252_addMigration")]
     partial class addMigration
     {
         /// <inheritdoc />
@@ -185,6 +185,9 @@ namespace WM.InventoryControl.Infrastructure.Migrations
 
                     b.Property<Guid>("PurchaseId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("QuantityUnitProduct")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

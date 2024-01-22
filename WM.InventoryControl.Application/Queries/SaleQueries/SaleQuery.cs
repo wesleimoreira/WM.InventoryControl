@@ -1,7 +1,8 @@
 ﻿using MediatR;
+using WM.InventoryControl.Application.Dtos;
 
 namespace WM.InventoryControl.Application.Queries.SaleQueries
 {
-    public record GetSaleQuery(Guid Id) : IRequest<SaleViewModel> { }
-    public record GetAllSaleQuery() : IRequest<IEnumerable<SaleViewModel>> { }
+    public record GetSaleQuery(Guid Id) : IRequest<SaleDto> { }
+    public record GetAllSaleQuery() : IRequest<IEnumerable<SaleDto>> { }
 }

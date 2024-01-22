@@ -1,14 +1,14 @@
 ﻿using MediatR;
-using WM.InventoryControl.Application.Queries.AddressQueries;
+using WM.InventoryControl.Application.Dtos;
 using WM.InventoryControl.Domain.Interfaces;
 
 namespace WM.InventoryControl.Application.Queries.CompanyQueries
 {
-    public class CompanyQueryHandler(ICompanyService companyService) : IRequestHandler<GetCompanyQuery, CompanyViewModel>, IRequestHandler<GetAllCompanyQuery, IEnumerable<CompanyViewModel>>
+    public class CompanyQueryHandler(ICompanyService companyService) : IRequestHandler<GetCompanyQuery, CompanyDto>, IRequestHandler<GetAllCompanyQuery, IEnumerable<CompanyDto>>
     {
         private readonly ICompanyService _companyService = companyService;
 
-        public async Task<CompanyViewModel> Handle(GetCompanyQuery request, CancellationToken cancellationToken)
+        public async Task<CompanyDto> Handle(GetCompanyQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -16,8 +16,8 @@ namespace WM.InventoryControl.Application.Queries.CompanyQueries
 
                 if (company is null) return default!;
 
-                var companyViewModel = new CompanyViewModel(company.Id, company.Name,
-                                       new AddressViewModel(
+                var companyViewModel = new CompanyDto(company.Id, company.Name,
+                                       new AddressDto(
                                             company.Address.Id,
                                             company.Address.Country,
                                             company.Address.State,
@@ -34,13 +34,13 @@ namespace WM.InventoryControl.Application.Queries.CompanyQueries
             }
         }
 
-        public async Task<IEnumerable<CompanyViewModel>> Handle(GetAllCompanyQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CompanyDto>> Handle(GetAllCompanyQuery request, CancellationToken cancellationToken)
         {
             try
             {
                 return (from company in await _companyService.GetAllCompaniesAsync()
-                        select new CompanyViewModel(company.Id, company.Name,
-                                        new AddressViewModel(
+                        select new CompanyDto(company.Id, company.Name,
+                                        new AddressDto(
                                              company.Address.Id,
                                              company.Address.Country,
                                              company.Address.State,

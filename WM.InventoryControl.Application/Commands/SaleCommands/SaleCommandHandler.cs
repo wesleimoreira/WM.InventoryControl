@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using WM.InventoryControl.Application.Validators;
 using WM.InventoryControl.Domain.Entities;
 using WM.InventoryControl.Domain.Interfaces;
 
@@ -30,7 +31,7 @@ namespace WM.InventoryControl.Application.Commands.SaleCommands
 
                 var productUpdate = await _productService.GetProductAsync(product.ProductId);
 
-                productUpdate.UpdateQuantityProduct(product.Quantity);
+                productUpdate.UpdateQuantityProductSale(product.Quantity);
             }
 
             await _unitOfWork.AddRangeAsync<SaleProduct>(saleProducts);
