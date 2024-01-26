@@ -16,5 +16,10 @@ namespace WM.InventoryControl.Infrastructure.Persistences.Services
         {
             return await ContextSqlServer.Employees.Include(x => x.Address).Include(x => x.Company).SingleOrDefaultAsync(x => x.Id == id) ?? default!;
         }
+
+        public async Task<Employee> GetEmployeeByEmailAsync(string email)
+        {
+            return await ContextSqlServer.Employees.Include(x => x.Address).Include(x => x.Company).SingleOrDefaultAsync(x => x.Email == email) ?? default!;
+        }
     }
 }

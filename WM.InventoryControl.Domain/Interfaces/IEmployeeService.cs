@@ -6,5 +6,7 @@ namespace WM.InventoryControl.Domain.Interfaces
     {
         Task<Employee> GetEmployeeAsync(Guid id);
         Task<IEnumerable<Employee>> GetAllEmployeesAsync();
+        Task<Employee> GetEmployeeByEmailAsync(string email);
+
     }
 }

@@ -21,6 +21,7 @@ namespace WM.InventoryControl.Infrastructure
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ISaleService, SaleService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<ICategoryService, CategoryService>();

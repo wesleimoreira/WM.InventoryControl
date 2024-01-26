@@ -19,7 +19,7 @@ namespace WM.InventoryControl.Application.Commands.EmployeeCommands
                    request.Address.Street,
                    request.Address.ZipCode));
 
-            var employeeId = await _unitOfWork.AddAsync<Employee>(new Employee(Guid.NewGuid(), request.Name, request.CompanyId, addressId));
+            var employeeId = await _unitOfWork.AddAsync<Employee>(new Employee(Guid.NewGuid(), request.Name, request.Email, request.CompanyId, addressId));
 
             await _unitOfWork.SaveChangesAsync();
 

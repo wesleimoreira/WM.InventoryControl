@@ -6,6 +6,7 @@ namespace WM.InventoryControl.Infrastructure.Contexts
 {
     public class ContextSqlServer(DbContextOptions<ContextSqlServer> options) : DbContext(options)
     {
+        public DbSet<User> Users => Set<User>();
         public DbSet<Sale> Sales => Set<Sale>();
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Address> Addresses => Set<Address>();

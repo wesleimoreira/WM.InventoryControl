@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WM.InventoryControl.Infrastructure.Contexts;
 
@@ -11,9 +12,11 @@ using WM.InventoryControl.Infrastructure.Contexts;
 namespace WM.InventoryControl.Infrastructure.Migrations
 {
     [DbContext(typeof(ContextSqlServer))]
-    partial class ContextSqlServerModelSnapshot : ModelSnapshot
+    [Migration("20240125195130_updateMigration")]
+    partial class updateMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -307,7 +310,7 @@ namespace WM.InventoryControl.Infrastructure.Migrations
                     b.HasIndex("EmployeeId")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("WM.InventoryControl.Domain.Entities.Company", b =>
