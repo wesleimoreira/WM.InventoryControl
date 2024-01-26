@@ -11,7 +11,7 @@ namespace WM.InventoryControl.Infrastructure.Persistences.Services
         {
             return await ContextSqlServer
                 .Users
-                .Where(x => string.Equals(x.Email, email, StringComparison.CurrentCultureIgnoreCase))
+                .Where(x => x.Email == email)
                 .SingleOrDefaultAsync() ?? default!;
         }
     }

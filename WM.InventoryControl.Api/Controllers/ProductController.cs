@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WM.InventoryControl.Application.Commands.ProductCommands;
 using WM.InventoryControl.Application.Queries.ProductQueries;
@@ -7,11 +8,13 @@ namespace WM.InventoryControl.Api.Controllers
 {
     [ApiController]
     [Route("v1/product")]
+    [Produces("application/json")]
+    [Authorize(Roles = "Admin, Employee")]
     public class ProductController(IMediator mediator) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;
 
-        [HttpPost]   
+        [HttpPost]        
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] AddProductCommand command)
@@ -28,8 +31,8 @@ namespace WM.InventoryControl.Api.Controllers
             }
         }
 
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]    
+        [HttpGet]       
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAll()
         {
@@ -43,8 +46,8 @@ namespace WM.InventoryControl.Api.Controllers
             }
         }
 
-        [HttpGet("{id:guid}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]       
+        [HttpGet("{id:guid}")]      
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {

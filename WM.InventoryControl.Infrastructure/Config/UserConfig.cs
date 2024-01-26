@@ -9,6 +9,7 @@ namespace WM.InventoryControl.Infrastructure.Config
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Role).HasColumnType("nvarchar(50)").IsRequired();
             builder.Property(x => x.Email).HasColumnType("nvarchar(200)").IsRequired();
             builder.Property(x => x.Password).HasColumnType("nvarchar(max)").IsRequired();
 

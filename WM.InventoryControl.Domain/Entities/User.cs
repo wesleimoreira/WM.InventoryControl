@@ -3,6 +3,7 @@
     public class User(Guid Id, string Email, string Password, Guid EmployeeId) : EntityBase(Id)
     {
         public string Email { get; private set; } = Email;
+        public string Role { get; private set; } = "Admin";
         public string Password { get; private set; } = Password;
 
 
