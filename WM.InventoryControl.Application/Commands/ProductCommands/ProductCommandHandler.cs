@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using WM.InventoryControl.Application.Validators;
 using WM.InventoryControl.Domain.Entities;
 using WM.InventoryControl.Domain.Interfaces;
 
@@ -12,7 +11,7 @@ namespace WM.InventoryControl.Application.Commands.ProductCommands
 
         public async Task<Guid> Handle(AddProductCommand request, CancellationToken cancellationToken)
         {
-            var product = ProductValidator.AddProduct(request.Name, request.Quantity, request.Price, request.CategoryId);
+            var product = new Product(Guid.NewGuid(), request.Name, request.Quantity, request.Price, request.CategoryId, DateTime.Now, null);
 
             var productId = await _unitOfWork.AddAsync<Product>(product);
 
@@ -27,7 +26,7 @@ namespace WM.InventoryControl.Application.Commands.ProductCommands
         {
             var product = await _productService.GetProductAsync(request.Id);
 
-            product.UpdateProduct(request.Name, request.Quantity, request.Price, request.CategoryId);
+            product?.UpdateProduct(request.Name, request.Quantity, request.Price, request.CategoryId);
 
             await _unitOfWork.SaveChangesAsync();
         }

@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Configuration;
-using WM.InventoryControl.Application.Validators;
 using WM.InventoryControl.Domain.Entities;
 using WM.InventoryControl.Domain.Interfaces;
 
@@ -15,11 +14,9 @@ namespace WM.InventoryControl.Application.Commands.UserCommands
 
         public async Task<Guid> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
-            var employee = await _employeeService.GetEmployeeByEmailAsync(request.Email);
+            var employee = await _employeeService.GetEmployeeByEmailAsync(request.Email) ?? throw new Exception("Email/Senha inválidos.");
 
-            if (employee is null) return Guid.Empty;
-
-            var userId = await _unitOfWork.AddAsync<User>(UserValidator.AddUser(request.Email, request.Password, employee.Id));
+            var userId = await _unitOfWork.AddAsync<User>(new User(Guid.NewGuid(), request.Email, request.Password, employee.Id));
 
             await _unitOfWork.SaveChangesAsync();
 
@@ -28,13 +25,25 @@ namespace WM.InventoryControl.Application.Commands.UserCommands
 
         public async Task<string> Handle(AddLoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userService.GetUserAsync(request.Email);
+            var user = await _userService.GetUserAsync(request.Email) ?? throw new Exception("Email/Senha inválidos.");
 
-            if (user is null) return default!;
-
-            if (!user.Password.Equals(UserValidator.ComputeSha256Hash(request.Password))) return default!;
+            if (!user.Password.Equals(ComputeSha256Hash(request.Password))) throw new Exception("Email/Senha inválidos.");
 
             return _configuration.GenerationToken(user);
+        }
+
+        private static string ComputeSha256Hash(string password)
+        {
+            byte[] bytes = System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(password));
+
+            var builder = new System.Text.StringBuilder();
+
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                builder.Append(bytes[i].ToString("x2"));
+            }
+
+            return builder.ToString();
         }
     }
 }

@@ -10,8 +10,6 @@ namespace WM.InventoryControl.Application.Commands.CategoryCommands
 
         public async Task<Guid> Handle(AddCategoryCommand request, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(request.Name)) throw new Exception("O nome e obrigatório.");
-
             var categoryId = await _unitOfWork.AddAsync<Category>(new Category(Guid.NewGuid(), request.Name));
 
             await _unitOfWork.SaveChangesAsync();

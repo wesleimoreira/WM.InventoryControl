@@ -6,9 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
 using System.Security.Claims;
-using System.Text;
 using WM.InventoryControl.Domain.Entities;
 
 namespace WM.InventoryControl.Application
@@ -20,7 +18,7 @@ namespace WM.InventoryControl.Application
             #region Configurações do Mediator
             services.AddMediatR(x =>
             {
-                x.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+                x.RegisterServicesFromAssembly(System.Reflection.Assembly.GetExecutingAssembly());
             });
             #endregion
 
@@ -80,7 +78,7 @@ namespace WM.InventoryControl.Application
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("Jwt:Key").Value ?? default!)),
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(configuration.GetSection("Jwt:Key").Value ?? default!)),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
@@ -120,7 +118,7 @@ namespace WM.InventoryControl.Application
         {
             var handler = new JwtSecurityTokenHandler();
 
-            var key = Encoding.ASCII.GetBytes(configuration.GetSection("Jwt:Key").Value ?? default!);
+            var key = System.Text.Encoding.ASCII.GetBytes(configuration.GetSection("Jwt:Key").Value ?? default!);
 
             return handler.WriteToken(handler.CreateToken(new SecurityTokenDescriptor
             {

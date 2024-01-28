@@ -5,7 +5,7 @@ using WM.InventoryControl.Application.Commands.CategoryCommands;
 using WM.InventoryControl.Application.Queries.CategoryQueries;
 
 namespace WM.InventoryControl.Api.Controllers
-{ 
+{
     [ApiController]
     [Route("v1/category")]
     [Produces("application/json")]
@@ -14,7 +14,7 @@ namespace WM.InventoryControl.Api.Controllers
     {
         private readonly IMediator _mediator = mediator;
 
-        [HttpPost]   
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] AddCategoryCommand command)
@@ -31,7 +31,7 @@ namespace WM.InventoryControl.Api.Controllers
             }
         }
 
-        [HttpGet]     
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAll()
@@ -46,7 +46,7 @@ namespace WM.InventoryControl.Api.Controllers
             }
         }
 
-        [HttpGet("{id:guid}")]       
+        [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -5,7 +5,7 @@ using WM.InventoryControl.Application.Commands.EmployeeCommands;
 using WM.InventoryControl.Application.Queries.EmployeeQueries;
 
 namespace WM.InventoryControl.Api.Controllers
-{   
+{
     [ApiController]
     [Route("v1/employee")]
     [Authorize(Roles = "Admin")]
@@ -31,7 +31,7 @@ namespace WM.InventoryControl.Api.Controllers
             }
         }
 
-        [HttpGet]        
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAll()
@@ -46,7 +46,7 @@ namespace WM.InventoryControl.Api.Controllers
             }
         }
 
-        [HttpGet("{id:guid}")]        
+        [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

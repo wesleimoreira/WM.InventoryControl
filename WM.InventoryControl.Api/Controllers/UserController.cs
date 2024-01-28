@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using WM.InventoryControl.Application.Commands.UserCommands;
 
 namespace WM.InventoryControl.Api.Controllers
-{   
+{
     [ApiController]
     [Route("v1/user")]
     [Produces("application/json")]
     public class UserController(IMediator mediator) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;
-        
+
         [HttpPost("/login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
