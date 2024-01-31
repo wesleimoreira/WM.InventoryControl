@@ -4,7 +4,7 @@ using WM.InventoryControl.Domain.Entities;
 
 namespace WM.InventoryControl.Application.Commands.AddressCommands
 {
-    public record AddressCommand(string Country, string State, string City, string District, string Street, string ZipCode) : IRequest<Guid>
+    public class AddressCommand(string Country, string State, string City, string District, string Street, string ZipCode) : IRequest<Guid>
     {
         [Required(ErrorMessage = "O pais e obrigatorio.")]
         public string Country { get; private set; } = Country;

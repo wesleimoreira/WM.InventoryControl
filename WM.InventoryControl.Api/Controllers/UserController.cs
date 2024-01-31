@@ -14,18 +14,12 @@ namespace WM.InventoryControl.Api.Controllers
 
         [HttpPost("/login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PostLogin(AddLoginCommand command)
+        public async Task<IActionResult> PostLogin([FromBody] AddLoginCommand command)
         {
             try
             {
-                var token = await _mediator.Send(command);
-
-                if (string.IsNullOrEmpty(token))
-                    return NotFound("Usuario/Senha não confere!");
-
-                return Ok(token);
+                return Ok(await _mediator.Send(command));
             }
             catch (Exception ex)
             {
@@ -36,16 +30,12 @@ namespace WM.InventoryControl.Api.Controllers
         [HttpPost("/register")]
         [Authorize(Roles = "Admin, Employee")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PostRegister(AddUserCommand command)
+        public async Task<IActionResult> PostRegister([FromBody] AddUserCommand command)
         {
             try
             {
-                var userId = await _mediator.Send(command);
-
-                if (Guid.Empty.Equals(userId))
-                    return NotFound("O email não foi encontrado em nossa base de dados!");
+                await _mediator.Send(command);
 
                 return Created(nameof(PostLogin), new { command });
             }

@@ -4,7 +4,7 @@ using WM.InventoryControl.Application.Commands.AddressCommands;
 
 namespace WM.InventoryControl.Application.Commands.CompanyCommands
 {
-    public record AddCompanyCommand(string Name, AddressCommand Address) : IRequest<Guid>
+    public class AddCompanyCommand(string Name, AddressCommand Address) : IRequest<Guid>
     {
         [Required(ErrorMessage = "O nome e obrigatorio.")]
         public string Name { get; private set; } = Name;

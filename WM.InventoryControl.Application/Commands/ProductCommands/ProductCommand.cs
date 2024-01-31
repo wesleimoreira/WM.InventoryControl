@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WM.InventoryControl.Application.Commands.ProductCommands
 {
-    public record AddProductCommand(string Name, int Quantity, decimal Price, Guid CategoryId, Guid SupplierId) : IRequest<Guid>
+    public class AddProductCommand(string Name, int Quantity, decimal Price, Guid CategoryId, Guid SupplierId) : IRequest<Guid>
     {
         [Required(ErrorMessage = "O nome e obrigatorio.")]
         public string Name { get; private set; } = Name;
@@ -21,8 +21,11 @@ namespace WM.InventoryControl.Application.Commands.ProductCommands
         public Guid SupplierId { get; set; } = SupplierId;
     }
 
-    public record UpdateProductCommand(Guid Id, string Name, int Quantity, decimal Price, Guid CategoryId) : IRequest
+    public class UpdateProductCommand(Guid Id, string Name, int Quantity, decimal Price, Guid CategoryId) : IRequest
     {
+        [Required(ErrorMessage = "O Id do produto e obrigatorio.")]
+        public Guid Id { get; private set; } = Id;
+
         [Required(ErrorMessage = "O nome e obrigatorio.")]
         public string Name { get; private set; } = Name;
 
